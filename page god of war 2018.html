@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Présentation et Notation des Jeux</title>
+    <style>
+        /* Styles de base pour la mise en page */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            background-image: url('images-html/black-prism-concept-ai-generated.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+
+        /* Header modernisé */
+        header {
+            background-color: rgba(20, 20, 30, 0.9);
+            color: #e0e0e0;
+            padding: 20px 30px;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid #ff6600;
+        }
+
+        /* Navigation avec effets */
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(30, 30, 40, 0.9);
+            padding: 12px 0;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 25px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ff6600;
+            text-decoration: none;
+            transform: scale(1.05);
+        }
+
+        /* Barre de recherche améliorée */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container input {
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            outline: none;
+            background-color: #fff;
+            font-size: 16px;
+            flex-grow: 1;
+        }
+
+        .search-container button {
+            border: none;
+            background: none;
+            color: #ff6600;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .search-container button:hover {
+            color: #ffffff;
+        }
+
+        /* Contenu principal */
+        main {
+            padding: 40px;
+        }
+
+        section {
+            margin-bottom: 30px;
+        }
+
+        /* Footer stylisé, mais sans position fixed */
+        footer {
+            background-color: rgba(20, 20, 30, 0.9);
+            color: #e0e0e0;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            border-top: 3px solid #ff6600;
+        }
+
+        /* Style des jeux */
+        .game {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 30px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #2a2a3a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .game img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .game-details {
+            padding: 20px;
+        }
+
+        .rating {
+            font-weight: bold;
+            color: #ff6600;
+            font-size: 20px;
+        }
+
+        /* Petites images avec disposition moderne */
+        .small-images {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .small-images div {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #444;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            flex-direction: column;
+        }
+
+        .small-images img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .small-images div p {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Nouveau style pour le premier paragraphe */
+        .first-paragraph {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin: 30px auto;
+            padding: 20px 30px;
+            max-width: 1000px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+        }
+
+        /* Conteneur de démonstration */
+        .demo {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Styles généraux des liens */
+        a {
+            text-decoration: none;
+            color: #ff6600;
+            font-size: 18px;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Animation lors du survol des liens */
+        a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff6600;
+            transition: width 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* MEDIA QUERIES POUR L'ADAPTATION MOBILE */
+
+        /* Pour les petits écrans (tablettes et téléphones) */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px;
+            }
+
+            nav {
+                flex-direction: column;
+                padding: 12px 0;
+            }
+
+            nav a {
+                margin: 6px 0;
+            }
+
+            .game {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .game img {
+                max-width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .small-images {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .small-images div {
+                width: 100%;
+                height: auto;
+            }
+
+            .first-paragraph {
+                padding: 15px;
+                font-size: 1.1em;
+                max-width: 100%;
+            }
+
+            .search-container {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 12px 5px;
+                width: 100%;
+            }
+
+            .search-container input {
+                flex-grow: 1;
+            }
+        }
+
+        /* Pour les très petits écrans (mobiles très petits ou anciens) */
+        @media (max-width: 480px) {
+            nav {
+                padding: 6px 0;
+            }
+
+            .search-container {
+                flex-direction: column;
+            }
+
+            .small-images {
+                grid-template-columns: 1fr;
+            }
+
+            .game img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            footer {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+        }
+
+        /* Le contenu principal (main) occupe toute la hauteur restante */
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            background-image: "images-html/black-prism-concept-ai-generated.jpg";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Le header reste en haut */
+        header {
+            background-color: #1a2530;
+            color: white;
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            /* Responsif */
+        }
+
+        /* Le footer reste en bas */
+        footer {
+            background-color: #1a2530;
+            color: white;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- En-tête du site web -->
+    <header>
+        <h1>GamingBox : Présentation et Notation</h1>
+        <p>Découvrez les jeux populaires et leur notation objective !</p>
+    </header>
+
+    <!-- Barre de navigation -->
+    <nav>
+        <a href="index.html">Accueil</a>
+
+
+    </nav>
+
+    <!-- Contenu principal -->
+    <main>
+        <!-- Section "Jeux" -->
+        <section id="games">
+            <center>
+                <h2 style="color: rgb(143, 137, 137);">God of War 2018</h2>
+            </center>
+
+            <div class="container">
+                <center><img src="images-html/god of war 2018-html.jpg" alt="Image de  God of War 2018"
+                        class="main-image" width="650 " height="400">
+                </center>
+                <center>
+                    <p class="rating">Note : 9.6/10</p>
+                </center>
+
+                <!-- Premier paragraphe avec le nouveau style -->
+                <p class="first-paragraph" style="color: #333;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;God of War (2018) est un jeu d'action-aventure développé par Santa Monica
+                    Studio et publié par Sony Interactive Entertainment. Le jeu suit Kratos, un ancien dieu de la
+                    guerre, et son fils Atreus dans un voyage à travers les royaumes de la mythologie nordique.
+                    Ensemble, ils cherchent à accomplir la dernière volonté de la mère d'Atreus : répandre ses cendres
+                    au sommet de la plus haute montagne.
+                    <br><br>
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;Le jeu se distingue par sa narration immersive et son gameplay axé sur le
+                    combat stratégique et l'exploration. Contrairement aux précédents opus, ce volet adopte une caméra à
+                    la troisième personne en plan rapproché, offrant une expérience plus intime et immersive.
+                    <br><br>
+
+                    <strong>Un système de combat renouvelé :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;L'un des aspects majeurs du jeu est son système de combat dynamique basé sur
+                    la hache Léviathan de Kratos. Cette arme emblématique peut être lancée et rappelée à volonté,
+                    introduisant des mécaniques stratégiques de combat et de résolution d'énigmes. Atreus assiste
+                    également Kratos en combat, en utilisant un arc pour distraire ou affaiblir les ennemis.
+                    <br><br>
+
+                    <strong>Exploration et progression :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Le jeu offre un monde semi-ouvert avec de nombreuses quêtes secondaires et
+                    secrets à découvrir. Les joueurs peuvent explorer les différents royaumes nordiques, résoudre des
+                    énigmes environnementales et affronter des créatures mythologiques. La progression repose sur
+                    l'amélioration de l'équipement et des compétences via un système de RPG léger.
+                    <br><br>
+
+                    <strong>Une relation père-fils au cœur de l'histoire :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;L'histoire de God of War met l'accent sur la relation entre Kratos et
+                    Atreus, mêlant moments d'émotion et apprentissage. Kratos doit apprendre à être un mentor pour son
+                    fils tout en luttant contre son passé violent et ses propres démons intérieurs.
+                    <br><br>
+
+                    <strong>Les royaumes et la mythologie nordique :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Le jeu s'inspire de la mythologie nordique et permet aux joueurs d'explorer
+                    des lieux mythiques comme Midgard, Alfheim et Helheim. Chaque royaume offre des paysages uniques,
+                    des créatures légendaires et des défis spécifiques liés à la culture et aux légendes nordiques.
+                    <br><br>
+
+                    <strong>Les énigmes et l'interaction avec l'environnement :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;L'exploration est enrichie par de nombreuses énigmes environnementales
+                    nécessitant l'utilisation de la hache Léviathan et des capacités d'Atreus. Les joueurs doivent
+                    analyser leur environnement et interagir avec différents éléments pour progresser dans l'aventure.
+                    <br><br>
+
+                    <strong>Graphismes et bande-son immersifs :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;God of War est salué pour ses graphismes époustouflants et sa direction
+                    artistique impressionnante. Les environnements sont détaillés et magnifiquement rendus, tandis que
+                    la bande-son orchestrale ajoute de la profondeur émotionnelle et de l'épique à l'expérience de jeu.
+                    <br><br>
+
+                    <strong>Une refonte de la saga :</strong>
+                    <br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Avec ce volet, la série God of War a évolué en introduisant une narration
+                    plus profonde et des mécaniques de jeu modernisées. Le jeu a été acclamé par la critique et les
+                    joueurs pour son approche plus mature, son gameplay raffiné et son univers captivant.
+                    <br>
+                </p>
+
+                <br>
+                <br>
+                <br>
+                <br>
+
+                <center>
+                    <h3 style="color: rgb(143, 137, 137);">Des jeux dans le même style : </h3>
+                </center>
+
+                <br>
+                <br>
+
+                <div class="small-images">
+                    <div>
+                        <img src="images-html/GOT-html.jpg" width="300" height="150" alt="Ghost of Tsushima
+                        ">
+                        <p>Ghost of Tsushima
+                        </p>
+                    </div>
+                    <div>
+                        <img src="images-html/elden-ring-html.jpg" width="300" height="150" alt="Elden Ring">
+                        <p>Elden Ring</p>
+                    </div>
+                    <div>
+                        <img src="images-html/red-dead-redemption-2-html.webp" width="300" height="150"
+                            alt="Red Dead Redemption 2">
+                        <p>Red Dead Redemption 2</p>
+                    </div>
+                    <div>
+                        <img src="images-html/ds-html.jpg" width="300" height="150" alt="Dark Souls">
+                        <p>Dark Souls
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2025 GamingBox. Tous droits réservés.</p>
+    </footer>
+
+
+
+</body>
+
+</html>

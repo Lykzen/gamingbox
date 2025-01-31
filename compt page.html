@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte - Forum</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-image: url('images-html/black-prism-concept-ai-generated.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* Empêche la barre de défilement horizontale */
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 32px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .orange-line {
+            height: 3px;
+            background-color: #ff6600;
+            width: 100%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(30, 30, 40, 0.9);
+            padding: 15px 0;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 25px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ff6600;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 100%;
+            margin: 80px auto;
+            font-family: 'Roboto', sans-serif;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            font-size: 26px;
+            text-align: center;
+            color: #333;
+            font-weight: 600;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .change-password {
+            color: #f44336;
+            text-align: center;
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .change-password:hover {
+            text-decoration: underline;
+        }
+
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+            /* S'assure que le champ de mot de passe occupe toute la largeur disponible */
+        }
+
+        .password-container input {
+            width: 100%;
+            /* Élargit le champ de mot de passe à la largeur maximale */
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .password-container input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            input,
+            button {
+                font-size: 14px;
+            }
+
+            .password-container input {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Compte</h1>
+    </header>
+
+    <div class="orange-line"></div>
+
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="page blog.html">Retour</a>
+    </nav>
+
+    <div class="container">
+        <h2>Modifier mes identifiants</h2>
+
+        <!-- Bouton de déconnexion au-dessus du pseudo -->
+        <button class="logout-btn" onclick="logout()">Déconnexion</button>
+
+        <label>Pseudo :</label>
+        <input type="text" id="user-username-field" value="" disabled>
+        <button onclick="enableEditUsername()">Modifier</button>
+
+        <label for="user-password">Mot de passe :</label>
+        <div class="password-container">
+            <input type="password" id="user-password" placeholder="Mot de passe" readonly>
+            <i class="fa-solid fa-eye-slash toggle-password" id="toggle-password"
+                onclick="togglePasswordVisibility()"></i>
+        </div>
+
+        <button onclick="togglePasswordVisibility()">Afficher/Masquer</button>
+
+        <span class="change-password" onclick="showPasswordChange()">Changer de mot de passe</span>
+
+        <div id="change-password-section" style="display: none;">
+            <label>Ancien mot de passe :</label>
+            <input type="password" id="old-password" placeholder="Ancien mot de passe">
+            <label>Nouveau mot de passe :</label>
+            <input type="password" id="new-password" placeholder="Nouveau mot de passe">
+            <button onclick="changePassword()">Valider</button>
+        </div>
+    </div>
+
+    <script>
+        const currentUser = localStorage.getItem('currentUser');
+        const passwordInput = document.getElementById('user-password');
+        const togglePasswordIcon = document.getElementById('toggle-password');
+        const logoutBtn = document.getElementById('logout-btn');
+        const changePasswordSection = document.getElementById('change-password-section');
+        const usernameField = document.getElementById('user-username-field');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (currentUser) {
+                usernameField.value = currentUser;
+                passwordInput.value = localStorage.getItem(currentUser);
+            } else {
+                alert('Vous devez être connecté pour accéder à cette page.');
+                window.location.href = 'login.html'; // Redirige vers la page de connexion
+            }
+        });
+
+        function enableEditUsername() {
+            usernameField.disabled = false;
+            usernameField.focus();
+        }
+
+        function changeUsername() {
+            const newUsername = usernameField.value;
+
+            if (newUsername && newUsername !== localStorage.getItem('currentUser')) {
+                localStorage.setItem('currentUser', newUsername);
+                alert("Pseudo modifié avec succès !");
+            } else {
+                alert("Veuillez entrer un nouveau pseudo.");
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('user-password');
+            const type = passwordField.type === 'password' ? 'text' : 'password';
+            passwordField.type = type;
+        }
+
+        function showPasswordChange() {
+            changePasswordSection.style.display = 'block';
+        }
+
+        function changePassword() {
+            const oldPassword = document.getElementById('old-password').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            if (oldPassword === localStorage.getItem(currentUser)) {
+                if (newPassword.length >= 6) {
+                    localStorage.setItem(currentUser, newPassword);
+                    alert("Mot de passe modifié avec succès !");
+                } else {
+                    alert("Le mot de passe doit comporter au moins 6 caractères.");
+                }
+            } else {
+                alert("Ancien mot de passe incorrect.");
+            }
+        }
+
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+
+</html>

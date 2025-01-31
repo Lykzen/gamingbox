@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum - Posez vos questions</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+    <!-- Ajouter le lien FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: url('images-html/black-prism-concept-ai-generated.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        header {
+            background-color: rgba(26, 37, 48, 0.8);
+            color: #e0e0e0;
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 4px solid #ff6600;
+        }
+
+        main {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(58, 75, 92, 0.85);
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin-top: 40px;
+            color: #e0e0e0;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        input,
+        textarea,
+        button {
+            margin-bottom: 15px;
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #5e6e7a;
+            border-radius: 8px;
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #questions-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #questions-list li {
+            background: #4a5d6a;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 6px solid #3498db;
+            border-radius: 6px;
+            transition: all 0.3s ease-in-out;
+            word-wrap: break-word;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #questions-list li:hover {
+            background-color: #3b4d59;
+            transform: scale(1.02);
+        }
+
+        #questions-list {
+            width: 95%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px;
+            background-color: rgba(26, 37, 48, 0.8);
+            border-radius: 10px;
+            border: 2px solid #3498db;
+            margin-top: 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(30, 30, 40, 0.9);
+            padding: 15px 0;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            margin: 0 25px;
+            font-size: 18px;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+        }
+
+        nav a:hover {
+            color: #ff6600;
+        }
+
+        a {
+            text-decoration: none;
+            color: #ff6600;
+            font-size: 18px;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+        a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff6600;
+            transition: width 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .login-form input,
+        .register-form input {
+            margin-bottom: 10px;
+        }
+
+        .login-form button,
+        .register-form button {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .stay-disconnected {
+            color: #e74c3c;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        /* Ajout de styles responsives pour garantir la même mise en page sur mobile */
+        @media only screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                /* Évite les problèmes de performance sur mobile */
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 0;
+            }
+
+            nav a {
+                padding: 12px 30px;
+                font-size: 16px;
+                text-align: center;
+                width: 80%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .search-container input {
+                width: 100%;
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .game {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .game img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .game-details {
+                padding: 15px;
+            }
+
+            .rating {
+                font-size: 18px;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            footer {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        .password-container input,
+        input {
+            width: 100%;
+            /* Pour que les champs aient la même largeur */
+            padding: 12px;
+            font-size: 18px;
+            border: 1px solid #5e6e7a;
+            border-radius: 8px;
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            padding-right: 15px;
+            /* Assure que le champ du mot de passe reste aligné avec l'icône */
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            /* Espacement par rapport au bord droit */
+            top: 50%;
+            transform: translateY(-50%);
+            /* Centrer verticalement */
+            cursor: pointer;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Forum - Posez vos questions</h1>
+    </header>
+
+    <nav>
+        <a href="index.html"><i class="fa-solid fa-house"></i> Accueil</a>
+        <a href="compt page.html"><i class="fa-solid fa-user"></i> Compte</a>
+    </nav>
+
+
+    <!-- Formulaire de création de compte -->
+    <section id="register-form" style="display: block;">
+        <h2>Créer un compte</h2>
+        <form id="register" class="register-form">
+            <input type="text" id="register-username" placeholder="Nom d'utilisateur" required>
+            <div class="password-container">
+                <input type="password" id="register-password" placeholder="Mot de passe" required>
+                <i class="toggle-password" id="toggle-register-password">&#128065;</i>
+                <!-- Icône pour afficher/cacher -->
+            </div>
+            <button type="submit">Créer un compte</button>
+        </form>
+        <p>Déjà un compte ? <a href="#" id="show-login">Se connecter</a></p>
+    </section>
+
+    <!-- Formulaire de connexion -->
+    <section id="login-form" style="display: none;">
+        <h2>Se connecter</h2>
+        <form id="login" class="login-form">
+            <input type="text" id="login-username" placeholder="Nom d'utilisateur" required>
+            <div class="password-container">
+                <input type="password" id="login-password" placeholder="Mot de passe" required>
+                <i class="toggle-password" id="toggle-login-password"><i class="fa-solid fa-eye-slash"></i></i>
+                <!-- Icône pour afficher/cacher -->
+            </div>
+            <button type="submit">Se connecter</button>
+        </form>
+        <p>Pas encore inscrit ? <a href="#" id="show-register">Créer un compte</a></p>
+        <p id="stay-disconnected" class="stay-disconnected" style="display: none;">
+            Vous êtes déconnecté. <a href="#" id="stay-logged-out">Rester déconnecté</a>
+        </p>
+    </section>
+
+    <!-- Formulaire pour poser une question -->
+    <main id="main-content" style="display: none;">
+        <section id="question-form">
+            <h2>Posez votre question</h2>
+            <form id="form">
+                <input type="text" id="username" placeholder="Votre nom" readonly>
+                <textarea id="question" placeholder="Votre question" required></textarea>
+                <button type="submit">Envoyer</button>
+            </form>
+        </section>
+        <section id="questions-list">
+            <h2>Questions des utilisateurs</h2>
+            <ul id="questions"></ul>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById('form');
+        const questionsList = document.getElementById('questions');
+        const currentUser = localStorage.getItem('currentUser');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const mainContent = document.getElementById('main-content');
+        const stayDisconnectedText = document.getElementById('stay-disconnected');
+        const questionInput = document.getElementById('question');
+        const stayLoggedOutBtn = document.getElementById('stay-logged-out');
+
+        // Fonction pour afficher le formulaire de connexion
+        document.getElementById('show-login').addEventListener('click', () => {
+            registerForm.style.display = 'none';
+            loginForm.style.display = 'block';
+        });
+
+        // Fonction pour afficher le formulaire de création de compte
+        document.getElementById('show-register').addEventListener('click', () => {
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'block';
+        });
+
+        const loadQuestions = () => {
+            const questions = JSON.parse(localStorage.getItem('questions')) || [];
+            questionsList.innerHTML = '';
+
+            questions.forEach((data, index) => {
+                const listItem = document.createElement('li');
+                const borderColor = data.username === currentUser ? '#3498db' : '#e74c3c';
+                listItem.style.borderLeft = `6px solid ${borderColor}`;
+
+                listItem.innerHTML = `
+                    <strong>${data.username}</strong>: ${data.question}
+                    <button class="delete-btn" onclick="deleteQuestion(${index})">Supprimer</button>
+                `;
+                questionsList.appendChild(listItem);
+            });
+        };
+
+        // Fonction pour poser une question
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value; // Le nom d'utilisateur sera pris ici
+            const question = document.getElementById('question').value;
+
+            if (username && question) {
+                const newQuestion = { username, question };
+                const questions = JSON.parse(localStorage.getItem('questions')) || [];
+                questions.push(newQuestion);
+                localStorage.setItem('questions', JSON.stringify(questions));
+                loadQuestions();
+                document.getElementById('question').value = ''; // clear textarea
+            }
+        });
+
+        // Fonction pour supprimer une question
+        const deleteQuestion = (index) => {
+            const questions = JSON.parse(localStorage.getItem('questions')) || [];
+            questions.splice(index, 1);
+            localStorage.setItem('questions', JSON.stringify(questions));
+            loadQuestions();
+        };
+
+        // Inscription d'un nouvel utilisateur
+        document.getElementById('register').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+
+            if (username && password) {
+                localStorage.setItem(username, password);
+                localStorage.setItem('currentUser', username); // Enregistrer le nom d'utilisateur lors de l'inscription
+                alert("Compte créé avec succès !");
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            }
+        });
+
+        // Connexion
+        document.getElementById('login').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            if (localStorage.getItem(username) === password) {
+                localStorage.setItem('currentUser', username);
+                alert("Connecté avec succès !");
+                loginForm.style.display = 'none';
+                mainContent.style.display = 'block';
+                loadQuestions();
+            } else {
+                alert("Nom d'utilisateur ou mot de passe incorrect.");
+            }
+        });
+
+        // Vérifier si un utilisateur est connecté
+        if (currentUser) {
+            document.getElementById('username').value = currentUser;
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'none';
+            mainContent.style.display = 'block';
+            loadQuestions();
+        } else {
+            loginForm.style.display = 'block';
+            registerForm.style.display = 'none';
+            stayDisconnectedText.style.display = 'block';
+            questionInput.setAttribute('disabled', 'true');
+        }
+
+        // Lorsque l'utilisateur clique sur "Rester déconnecté", il peut voir les questions
+        stayLoggedOutBtn.addEventListener('click', () => {
+            stayDisconnectedText.style.display = 'none';
+            mainContent.style.display = 'block';
+            questionInput.setAttribute('disabled', 'true');
+            loadQuestions();
+        });
+
+
+        // Fonction pour afficher ou cacher le mot de passe dans le formulaire d'inscription
+        document.getElementById('toggle-register-password').addEventListener('click', () => {
+            const passwordInput = document.getElementById('register-password');
+            const icon = document.getElementById('toggle-register-password');
+
+            if (passwordInput.type === 'password') {
+                // Afficher le mot de passe
+                passwordInput.type = 'text';
+                icon.innerHTML = '<i class="fa-solid fa-eye"></i>'; // Icône pour afficher le mot de passe
+            } else {
+                // Cacher le mot de passe
+                passwordInput.type = 'password';
+                icon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; // Icône pour cacher le mot de passe
+            }
+        });
+
+        // Fonction pour afficher ou cacher le mot de passe dans le formulaire de connexion
+        document.getElementById('toggle-login-password').addEventListener('click', () => {
+            const passwordInput = document.getElementById('login-password');
+            const icon = document.getElementById('toggle-login-password');
+
+            if (passwordInput.type === 'password') {
+                // Afficher le mot de passe
+                passwordInput.type = 'text';
+                icon.innerHTML = '<i class="fa-solid fa-eye"></i>'; // Icône pour afficher le mot de passe
+            } else {
+                // Cacher le mot de passe
+                passwordInput.type = 'password';
+                icon.innerHTML = '<i class="fa-solid fa-eye-slash"></i>'; // Icône pour cacher le mot de passe
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

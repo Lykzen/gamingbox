@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GamingBox</title>
+    <style>
+        /* Styles de base pour la mise en page */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            background-image: url('images-html/black-prism-concept-ai-generated.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            box-sizing: border-box;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            background-color: rgba(30, 30, 40, 0.9);
+            padding: 20px 0;
+            width: 100%;
+            position: relative;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Liens de la navigation avec bord arrondi plus petit */
+        nav a {
+            display: inline-flex;
+            align-items: center;
+            /* Alignement vertical des éléments à l'intérieur */
+            justify-content: center;
+            padding: 15px 40px;
+            background-color: transparent;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border: 2px solid white;
+            border-radius: 100px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Effet de survol des liens */
+        nav a:hover {
+            background-color: white;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Style spécifique des liens des jeux avec la barre orange */
+        .game a {
+            text-decoration: none;
+            color: #ff6600;
+            font-size: 18px;
+            position: relative;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .game a::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff6600;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .game a:hover {
+            color: #ffffff;
+        }
+
+        .game a:hover::after {
+            width: 100%;
+        }
+
+        /* Champ de recherche */
+        .search-container {
+            display: flex;
+            align-items: center;
+            background-color: #333;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .search-container input {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            outline: none;
+            background-color: #fff;
+            flex-grow: 1;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            border: none;
+            background: none;
+            color: #ff6600;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .search-container button:hover {
+            color: #ffffff;
+        }
+
+        /* Contenu principal */
+        main {
+            padding: 40px;
+            color: #e0e0e0;
+            padding-top: 80px;
+        }
+
+        /* Pied de page */
+        footer {
+            background-color: rgba(20, 20, 30, 0.9);
+            color: #e0e0e0;
+            text-align: center;
+            padding: 15px;
+            width: 100%;
+            border-top: 2px solid #ff6600;
+        }
+
+        /* Style des jeux */
+        .game {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 20px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #2a2a3a;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .game img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        .game-details {
+            padding: 20px;
+        }
+
+        .rating {
+            font-weight: bold;
+            color: #ff6600;
+            font-size: 20px;
+        }
+
+        /* Style des boutons de notation */
+        .rating2 button {
+            font-size: 20px;
+            margin: 5px;
+            padding: 12px 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: 2px solid #ff6600;
+            border-radius: 8px;
+            color: #ff6600;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .rating2 button:hover {
+            background-color: #ff6600;
+            color: #fff;
+        }
+
+        /* Style des boutons généraux */
+        button {
+            font-size: 18px;
+            margin-top: 15px;
+            padding: 12px 30px;
+            cursor: pointer;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #cc5200;
+            transform: scale(1.05);
+        }
+
+        /* Cacher les éléments lorsque la recherche est active */
+        .hidden {
+            display: none;
+        }
+
+        /* Hauteur complète de la page */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Le contenu principal occupe toute la hauteur restante */
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Header en haut */
+        header {
+            background-color: #1a2530;
+            color: white;
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            font-size: 26px;
+        }
+
+        /* Footer en bas */
+        footer {
+            background-color: #1a2530;
+            color: white;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* Effet lorsque l'on défile */
+        body.scrolled nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Icônes alignées à droite avec le texte */
+        nav a i {
+            margin-left: 10px;
+            /* Espacement entre le texte et l'icône */
+        }
+
+        /* Alignement des icônes avec le texte */
+        nav a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 13px 40px;
+            /* Ajuste légèrement le padding pour avoir plus d'espace autour des icônes */
+            background-color: transparent;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            border: 2px solid white;
+            border-radius: 100px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Remonter légèrement les icônes */
+        nav a i {
+            margin-left: 10px;
+            /* Espacement entre l'icône et le texte */
+            transform: translateY(-2px);
+            /* Déplace légèrement l'icône vers le haut */
+        }
+
+        /* S'assurer que la loupe (magnifying-glass) est également alignée */
+        nav a .fa-magnifying-glass {
+            transform: translateY(-2px);
+            /* Remonte légèrement la loupe */
+        }
+
+        /* Lors de la recherche active, les résumés des jeux auront une couleur de texte blanche */
+        .search-active {
+            color: white !important;
+        }
+
+        /* Ajout de styles responsives pour garantir la même mise en page sur mobile */
+        @media only screen and (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                /* Évite les problèmes de performance sur mobile */
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 0;
+            }
+
+            nav a {
+                padding: 12px 30px;
+                font-size: 16px;
+                text-align: center;
+                width: 80%;
+            }
+
+
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            .search-container input {
+                width: 100%;
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+
+            .game {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .game img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .game-details {
+                padding: 15px;
+            }
+
+            .rating {
+                font-size: 18px;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            footer {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        #cookie-consent-banner {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+
+        #cookie-consent-banner a {
+            color: #aad4e3;
+            text-decoration: none;
+        }
+
+        #accept-cookies {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+
+<body>
+    <!-- En-tête du site web -->
+    <header>
+        <h1>GamingBox : Présentation et Notation</h1>
+        <p>Découvrez les jeux populaires et leur notation objective !</p>
+    </header>
+
+
+    <!-- Barre de navigation -->
+    <nav>
+        <a href="index.html">
+            <i class="fa-solid fa-house"></i> Accueil
+        </a>
+        <a href="page blog.html">
+            Forum
+        </a>
+        <a href="compt page.html" id="accountLink">
+            <i class="fa-solid fa-user"></i> Compte
+        </a>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Rechercher..." onkeyup="searchGames()">
+        </div>
+
+    </nav>
+
+    <head>
+        <!-- Cookie Consent Banner -->
+        <div id="cookie-consent-banner"
+            style="position: fixed; bottom: 0; left: 0; right: 0; background-color: rgba(0, 0, 0, 0.8); color: white; padding: 15px; text-align: center; font-size: 14px; z-index: 9999;">
+            <p>
+                Nous utilisons des cookies pour améliorer votre expérience. En naviguant sur notre site, vous acceptez
+                notre politique de cookies.
+                <a href="politique confidentilitée.html" style="color: #ff6600;">En savoir plus</a>
+            </p>
+            <button id="accept-cookies"
+                style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; cursor: pointer;">Accepter</button>
+        </div>
+
+
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    </head>
+    <!-- Ajout du lien vers le fichier CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <div id="gameList">
+        <!-- Exemples d'éléments de jeux -->
+
+        <h3></h3>
+    </div>
+
+    <h3></h3>
+    </div>
+
+    <h3></h3>
+    </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <main>
+        <!-- Section "Jeux" -->
+        <section id="ganb mes">
+            <h2 style="color: whitesmoke;">Les Jeux :</h2>
+
+            <!-- Exemple de jeu 1 : Ark -->
+            <div class="game">
+                <img src="images-html/ark-html.jpg" width="300" height="150" alt="Image de ARK">
+                <div class="game-details">
+                    <h3><a href="page-ark.html" style="color: inherit; text-decoration: none;">ARK : Survival
+                            Evolved</a></h3>
+                    <p>
+                        Un jeu de survie où les joueurs doivent dompter des dinosaures, construire des bases et lutter
+                        pour survivre sur une île sauvage peuplée de créatures préhistoriques.
+                    </p>
+                    <p class="rating">Note : 4.3/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('ark', 1)">1</button>
+                <button onclick="rate('ark', 2)">2</button>
+                <button onclick="rate('ark', 3)">3</button>
+                <button onclick="rate('ark', 4)">4</button>
+                <button onclick="rate('ark', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-ark">0</span></p>
+            <button onclick="removeVote('ark')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 2 : The Legend of Zelda: Breath of the Wild -->
+            <div class="game">
+                <img src="images-html/Breath-of-the-Wild-html.webp" width="300" height="150"
+                    alt="Image de Breath of the Wild">
+                <div class="game-details">
+                    <h3><a href="page-botw.html" style="color: inherit; text-decoration: none;">The Legend Of Zelda:
+                            Breath Of The Wild</a></h3>
+                    <p>Un jeu d'action-aventure révolutionnaire où vous explorez un vaste monde ouvert rempli de
+                        mystères et de défis.</p>
+                    <p class="rating">Note : 4.9/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('botw', 1)">1</button>
+                <button onclick="rate('botw', 2)">2</button>
+                <button onclick="rate('botw', 3)">3</button>
+                <button onclick="rate('botw', 4)">4</button>
+                <button onclick="rate('botw', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-botw">0</span></p>
+            <button onclick="removeVote('botw')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 3 : Counter-Strike 2 -->
+            <div class="game">
+                <img src="images-html/counter-strike-2-html.jpg" width="300" height="150"
+                    alt="Image de Counter-Strike 2">
+                <div class="game-details">
+                    <h3><a href="page-csgo.html" style="color: inherit; text-decoration: none;">Counter-Strike 2</a>
+                    </h3>
+                    <p>Un jeu de tir tactique en équipe où les joueurs incarnent des terroristes ou des antiterroristes.
+                        L'objectif varie selon le mode : poser ou désamorcer une bombe, sauver des otages ou éliminer
+                        l'équipe adverse.</p>
+                    <p class="rating">Note : 4.5/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('csgo', 1)">1</button>
+                <button onclick="rate('csgo', 2)">2</button>
+                <button onclick="rate('csgo', 3)">3</button>
+                <button onclick="rate('csgo', 4)">4</button>
+                <button onclick="rate('csgo', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-csgo">0</span></p>
+            <button onclick="removeVote('csgo')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 4 : Dark Souls -->
+            <div class="game">
+                <img src="images-html/ds-html.jpg" width="300" height="150" alt="Image de Dark Souls">
+                <div class="game-details">
+                    <h3><a href="page-dark-souls.html" style="color: inherit; text-decoration: none;">Dark Souls</a>
+                    </h3>
+                    <p>Un action-RPG légendaire connu pour son défi impitoyable, son univers sombre et sa narration
+                        subtile à travers l'exploration.</p>
+                    <p class="rating">Note : 4.6/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('ds', 1)">1</button>
+                <button onclick="rate('ds', 2)">2</button>
+                <button onclick="rate('ds', 3)">3</button>
+                <button onclick="rate('ds', 4)">4</button>
+                <button onclick="rate('ds', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-ds">0</span></p>
+            <button onclick="removeVote('ds')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 5 : Elden Ring -->
+            <div class="game">
+                <img src="images-html/elden-ring-html.jpg" width="300" height="150" alt="Image de Elden Ring">
+                <div class="game-details">
+                    <h3><a href="page-elden_ring.html" style="color: inherit; text-decoration: none;">Elden Ring</a>
+                    </h3>
+                    <p>Un RPG fantastique collaboratif de FromSoftware et George R.R. Martin, combinant une narration
+                        immersive et un gameplay exigeant.</p>
+                    <p class="rating">Note : 4.7/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('elden_ring', 1)">1</button>
+                <button onclick="rate('elden_ring', 2)">2</button>
+                <button onclick="rate('elden_ring', 3)">3</button>
+                <button onclick="rate('elden_ring', 4)">4</button>
+                <button onclick="rate('elden_ring', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-elden_ring">0</span></p>
+            <button onclick="removeVote('elden_ring')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Autres jeux suivent le même modèle -->
+
+
+
+            <!-- Exemple de jeu 6 : FIFA 25 -->
+            <div class="game">
+                <img src="images-html/FC25-html.jpg" width="300" height="150" alt="Image de FIFA 25">
+                <div class="game-details">
+                    <h3><a href="page-fifa-25.html" style="color: inherit; text-decoration: none;">FIFA 25</a>
+                    </h3>
+                    <p>Un jeu de football de simulation qui propose un gameplay réaliste avec des équipes du monde
+                        entier.</p>
+                    <p class="rating">Note : 4/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('fc25', 1)">1</button>
+                <button onclick="rate('fc25', 2)">2</button>
+                <button onclick="rate('fc25', 3)">3</button>
+                <button onclick="rate('fc25', 4)">4</button>
+                <button onclick="rate('fc25', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-fc25">0</span></p>
+            <button onclick="removeVote('fc25')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 7 : God of War -->
+            <div class="game">
+                <img src="images-html/god of war 2018-html.jpg" width="300" height="150" alt="Image de God of War">
+                <div class="game-details">
+                    <h3><a href="page god of war 2018.html" style="color: inherit; text-decoration: none;">God of
+                            War</a></h3>
+                    <p>Un jeu d'action-aventure épique qui réinvente la série, mettant en avant la relation entre Kratos
+                        et son fils Atreus. Situé dans la mythologie nordique, il offre un gameplay immersif, une
+                        narration poignante et des combats intenses.</p>
+                    <p class="rating">Note : 4.6/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('gow', 1)">1</button>
+                <button onclick="rate('gow', 2)">2</button>
+                <button onclick="rate('gow', 3)">3</button>
+                <button onclick="rate('gow', 4)">4</button>
+                <button onclick="rate('gow', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-gow">0</span></p>
+            <button onclick="removeVote('gow')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 8 : Hollow Knight -->
+            <div class="game">
+                <img src="images-html/hollow knight-html.jpg" width="300" height="150" alt="Image de Hollow Knight">
+                <div class="game-details">
+                    <h3><a href="page hollow knight.html" style="color: inherit; text-decoration: none;">Hollow
+                            Knight</a></h3>
+                    <p>Un jeu d'action-aventure en 2D dans un monde souterrain où vous incarnez un chevalier explorant
+                        les ruines d’Hallownest, affrontant des ennemis coriaces et découvrant des secrets captivants.
+                    </p>
+                    <p class="rating">Note :4.7/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('hollow_knight', 1)">1</button>
+                <button onclick="rate('hollow_knight', 2)">2</button>
+                <button onclick="rate('hollow_knight', 3)">3</button>
+                <button onclick="rate('hollow_knight', 4)">4</button>
+                <button onclick="rate('hollow_knight', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-hollow_knight">0</span></p>
+            <button onclick="removeVote('hollow_knight')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 9 : Immortals Fenyx Rising -->
+            <div class="game">
+                <img src="images-html/Immortals-Fenyx-Rising-html.webp" width="300" height="150"
+                    alt="Image de Immortals Fenyx Rising">
+                <div class="game-details">
+                    <h3><a href="page imortal fenyx rising.html"
+                            style="color: inherit; text-decoration: none;">Immortals Fenyx Rising</a></h3>
+                    <p>Un jeu d'action-aventure en monde ouvert où vous incarnez Fenyx, un héros mortel, chargé de
+                        sauver les dieux grecs du titan Typhon. Avec des combats dynamiques, des énigmes et une
+                        esthétique vibrante.</p>
+                    <p class="rating">Note : 4.3/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('immortals_fenyx_rising', 1)">1</button>
+                <button onclick="rate('immortals_fenyx_rising', 2)">2</button>
+                <button onclick="rate('immortals_fenyx_rising', 3)">3</button>
+                <button onclick="rate('immortals_fenyx_rising', 4)">4</button>
+                <button onclick="rate('immortals_fenyx_rising', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-immortals_fenyx_rising">0</span></p>
+            <button onclick="removeVote('immortals_fenyx_rising')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 10 : Minecraft -->
+            <div class="game">
+                <img src="images-html/minecraft-html.webp" width="300" height="150" alt="Image de Minecraft">
+                <div class="game-details">
+                    <h3><a href="mincraft.html" style="color: inherit; text-decoration: none;">Minecraft</a></h3>
+                    <p>Minecraft est un jeu de construction et de survie qui invite les joueurs à explorer un monde
+                        infini généré de manière procédurale, où chaque bloc peut être détruit, déplacé ou placé.</p>
+                    <p class="rating">Note : 4.8/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('minecraft', 1)">1</button>
+                <button onclick="rate('minecraft', 2)">2</button>
+                <button onclick="rate('minecraft', 3)">3</button>
+                <button onclick="rate('minecraft', 4)">4</button>
+                <button onclick="rate('minecraft', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-minecraft">0</span></p>
+            <button onclick="removeVote('minecraft')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 11 : No Man's Sky -->
+            <div class="game">
+                <img src="images-html/no man s sky-html.jpg" width="300" height="150" alt="Image de No Man's Sky">
+                <div class="game-details">
+                    <h3><a href="no man's sky.html" style="color: inherit; text-decoration: none;">No Man's Sky</a>
+                    </h3>
+                    <p>Un jeu d'exploration spatiale où les joueurs peuvent visiter un nombre quasi infini de planètes
+                        générées de manière procédurale, chacune avec sa propre faune, flore et ressources uniques.</p>
+                    <p class="rating">Note : 3.9/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('no_mans_sky', 1)">1</button>
+                <button onclick="rate('no_mans_sky', 2)">2</button>
+                <button onclick="rate('no_mans_sky', 3)">3</button>
+                <button onclick="rate('no_mans_sky', 4)">4</button>
+                <button onclick="rate('no_mans_sky', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-no_mans_sky">0</span></p>
+            <button onclick="removeVote('no_mans_sky')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 12 : Overwatch -->
+            <div class="game">
+                <img src="images-html/overwatche -html.webp" width="300" height="150" alt="Image de Overwatch">
+                <div class="game-details">
+                    <h3><a href="page overwatch.html" style="color: inherit; text-decoration: none;">Overwatch</a></h3>
+                    <p>Un jeu de tir multijoueur en équipe, combinant des héros uniques avec des compétences variées
+                        dans un univers futuriste dynamique. Chaque partie nécessite une coordination stratégique et une
+                        adaptation rapide.</p>
+                    <p class="rating">Note : 4.4/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('overwatch', 1)">1</button>
+                <button onclick="rate('overwatch', 2)">2</button>
+                <button onclick="rate('overwatch', 3)">3</button>
+                <button onclick="rate('overwatch', 4)">4</button>
+                <button onclick="rate('overwatch', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-overwatch">0</span></p>
+            <button onclick="removeVote('overwatch')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 13 : Palworld -->
+            <div class="game">
+                <img src="images-html/palworld-html.jpg" width="300" height="150" alt="Image de Palworld">
+                <div class="game-details">
+                    <h3><a href="palworld.html" style="color: inherit; text-decoration: none;">Palworld</a></h3>
+                    <p>Un jeu d'aventure en monde ouvert où vous interagissez avec des créatures appelées "Pals".
+                        Explorez, capturez, combattez et survivez dans un univers unique, avec des mécaniques sombres,
+                        comme l'exploitation des Pals.</p>
+                    <p class="rating">Note : 4.1/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('palworld', 1)">1</button>
+                <button onclick="rate('palworld', 2)">2</button>
+                <button onclick="rate('palworld', 3)">3</button>
+                <button onclick="rate('palworld', 4)">4</button>
+                <button onclick="rate('palworld', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-palworld">0</span></p>
+            <button onclick="removeVote('palworld')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 14 : Red Dead Redemption 2 -->
+            <div class="game">
+                <img src="images-html/red-dead-redemption-2-html.webp" width="300" height="150"
+                    alt="Image de Red Dead Redemption 2">
+                <div class="game-details">
+                    <h3><a href="red dead redemption 2.html" style="color: inherit; text-decoration: none;">Red
+                            Dead Redemption 2</a></h3>
+                    <p>Un jeu d'action-aventure en monde ouvert qui plonge les joueurs dans l'univers impitoyable de
+                        l'Ouest sauvage, suivant l'histoire d'Arthur Morgan, un membre de la bande Van der Linde à la
+                        fin de l'ère des hors-la-loi.</p>
+                    <p class="rating">Note : 4.8/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('red_dead_redemption_2', 1)">1</button>
+                <button onclick="rate('red_dead_redemption_2', 2)">2</button>
+                <button onclick="rate('red_dead_redemption_2', 3)">3</button>
+                <button onclick="rate('red_dead_redemption_2', 4)">4</button>
+                <button onclick="rate('red_dead_redemption_2', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-red_dead_redemption_2">0</span></p>
+            <button onclick="removeVote('red_dead_redemption_2')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 15 : Sekiro -->
+            <div class="game">
+                <img src="images-html/sekiro-html.jpg" width="300" height="150" alt="Image de Sekiro">
+                <div class="game-details">
+                    <h3><a href="sekiro.html" style="color: inherit; text-decoration: none;">Sekiro</a></h3>
+                    <p>Un jeu d'action-aventure exigeant se déroulant dans le Japon féodal, où vous incarnez un shinobi
+                        en quête de vengeance et de rédemption.</p>
+                    <p class="rating">Note : 4.7/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('sekiro', 1)">1</button>
+                <button onclick="rate('sekiro', 2)">2</button>
+                <button onclick="rate('sekiro', 3)">3</button>
+                <button onclick="rate('sekiro', 4)">4</button>
+                <button onclick="rate('sekiro', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-sekiro">0</span></p>
+            <button onclick="removeVote('sekiro')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 16 : The Last of Us -->
+            <div class="game">
+                <img src="images-html/The-Last-of-Us-html.webp" width="300" height="150" alt="Image de The Last of Us">
+                <div class="game-details">
+                    <h3><a href="the last of us.html" style="color: inherit; text-decoration: none;">The Last of
+                            Us</a></h3>
+                    <p>Un jeu d'action-aventure post-apocalyptique où Joel et Ellie traversent les États-Unis dévastés,
+                        affrontant des infectés et des survivants dans une histoire émotive et intense.</p>
+                    <p class="rating">Note : 4.9/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('the_last_of_us', 1)">1</button>
+                <button onclick="rate('the_last_of_us', 2)">2</button>
+                <button onclick="rate('the_last_of_us', 3)">3</button>
+                <button onclick="rate('the_last_of_us', 4)">4</button>
+                <button onclick="rate('the_last_of_us', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-the_last_of_us">0</span></p>
+            <button onclick="removeVote('the_last_of_us')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 17 : Undertale -->
+            <div class="game">
+                <img src="images-html/undertail-html.jpg" width="300" height="150" alt="Image de Undertale">
+                <div class="game-details">
+                    <h3><a href="undertale.html" style="color: inherit; text-decoration: none;">Undertale</a></h3>
+                    <p>Un jeu d'action-aventure post-apocalyptique où Joel et Ellie traversent les États-Unis dévastés,
+                        affrontant des infectés et des survivants dans une histoire émotive et intense.</p>
+                    <p class="rating">Note : 4.5/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('undertale', 1)">1</button>
+                <button onclick="rate('undertale', 2)">2</button>
+                <button onclick="rate('undertale', 3)">3</button>
+                <button onclick="rate('undertale', 4)">4</button>
+                <button onclick="rate('undertale', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-undertale">0</span></p>
+            <button onclick="removeVote('undertale')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 18 : Valorant -->
+            <div class="game">
+                <img src="images-html/valorant-html.jpg" width="300" height="150" alt="Image de Valorant">
+                <div class="game-details">
+                    <h3><a href="valorant.html" style="color: inherit; text-decoration: none;">Valorant</a></h3>
+                    <p>Un jeu de tir tactique en équipe où chaque joueur choisit un agent doté de pouvoirs uniques. Le
+                        jeu combine stratégie et compétences de tir dans des matchs compétitifs.</p>
+                    <p class="rating">Note :4.6/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('valorant', 1)">1</button>
+                <button onclick="rate('valorant', 2)">2</button>
+                <button onclick="rate('valorant', 3)">3</button>
+                <button onclick="rate('valorant', 4)">4</button>
+                <button onclick="rate('valorant', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-valorant">0</span></p>
+            <button onclick="removeVote('valorant')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Exemple de jeu 19 : World of Warcraft -->
+            <div class="game">
+                <img src="images-html/worl-of-warcraft-html.jpg" width="300" height="150"
+                    alt="Image de World of Warcraft">
+                <div class="game-details">
+                    <h3><a href="world of warcraf.html" style="color: inherit; text-decoration: none;">World of
+                            Warcraft</a></h3>
+                    <p>Un jeu de tir tactique en équipe où chaque joueur choisit un agent doté de pouvoirs uniques. Le
+                        jeu combine stratégie et compétences de tir dans des matchs compétitifs.</p>
+                    <p class="rating">Note :4.4/5</p>
+                </div>
+            </div>
+            <div class="rating">
+                <button onclick="rate('world_of_warcraft', 1)">1</button>
+                <button onclick="rate('world_of_warcraft', 2)">2</button>
+                <button onclick="rate('world_of_warcraft', 3)">3</button>
+                <button onclick="rate('world_of_warcraft', 4)">4</button>
+                <button onclick="rate('world_of_warcraft', 5)">5</button>
+            </div>
+            <p style="color: #ccc;">Note moyenne: <span id="average-world_of_warcraft">0</span></p>
+            <button onclick="removeVote('world_of_warcraft')">Enlever ma note</button>
+
+            <br><br><br>
+
+            <!-- Autres jeux (ajoutez ici vos autres jeux comme dans votre code d'origine) -->
+
+        </section>
+    </main>
+
+    <!-- Pied de page -->
+    <footer>
+        <p>&copy; 2025 GamingBox. Tous droits réservés.</p><br>
+        <p>Nous contacter : GamingBox@gmail.com</p>
+    </footer>
+
+
+    <script>
+        // Fonction pour activer ou désactiver la visibilité des éléments
+        function toggleVisibility(isSearchActive) {
+            const allElements = document.querySelectorAll('header, footer, main > section');
+            allElements.forEach(element => {
+                if (isSearchActive) {
+                    element.classList.add('hidden');
+                } else {
+                    element.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Fonction de recherche pour filtrer et réorganiser les jeux
+        function searchGames() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const gameList = document.getElementById('gameList');
+            const games = Array.from(document.querySelectorAll('.game'));
+
+            const matchingGames = games.filter(game =>
+                game.querySelector('h3').textContent.toLowerCase().includes(searchInput)
+            );
+            const nonMatchingGames = games.filter(game => !matchingGames.includes(game));
+
+            games.forEach(game => {
+                game.style.display = matchingGames.includes(game) ? 'flex' : 'none';
+            });
+
+            gameList.innerHTML = '';
+            matchingGames.concat(nonMatchingGames).forEach(game => gameList.appendChild(game));
+
+            // Si la loupe est activée, masquer les autres éléments
+            toggleVisibility(searchInput.length > 0);
+        }
+
+        // Fonction pour obtenir et mettre à jour les notes pour chaque jeu
+        function getRatings(gameId) {
+            let ratings = JSON.parse(localStorage.getItem(gameId)) || [];
+            return ratings;
+        }
+
+        function updateAverage(gameId) {
+            const ratings = getRatings(gameId);
+            const averageSpan = document.getElementById('average-' + gameId);
+            if (ratings.length > 0) {
+                const sum = ratings.reduce((a, b) => a + b, 0);
+                const average = (sum / ratings.length).toFixed(1);
+                averageSpan.textContent = average;
+            } else {
+                averageSpan.textContent = "0";
+            }
+        }
+
+        function rate(gameId, note) {
+            const ratings = getRatings(gameId);
+            const userVote = localStorage.getItem(gameId + '-user-vote');
+            if (userVote) {
+                alert('Vous avez déjà voté pour ce jeu. Votre note sera modifiée.');
+            }
+
+            ratings.push(note);
+            localStorage.setItem(gameId, JSON.stringify(ratings));
+            localStorage.setItem(gameId + '-user-vote', note);
+
+            updateAverage(gameId);
+            alert('Merci pour votre vote !');
+        }
+
+        function removeVote(gameId) {
+            const userVote = localStorage.getItem(gameId + '-user-vote');
+            if (!userVote) {
+                alert('Vous n\'avez pas encore voté pour ce jeu.');
+                return;
+            }
+
+            let ratings = getRatings(gameId);
+            const index = ratings.indexOf(Number(userVote));
+            if (index > -1) {
+                ratings.splice(index, 1);
+            }
+
+            localStorage.setItem(gameId, JSON.stringify(ratings));
+            localStorage.removeItem(gameId + '-user-vote');
+
+            updateAverage(gameId);
+            alert('Votre vote a été supprimé ! Vous pouvez maintenant noter à nouveau.');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Vérifie si l'utilisateur est connecté lors du clic sur "Compte"
+            const accountLink = document.getElementById('accountLink');
+            if (accountLink) {
+                accountLink.addEventListener('click', function (e) {
+                    const currentUser = localStorage.getItem('currentUser');
+                    if (!currentUser) {
+                        e.preventDefault();  // Empêche l'action par défaut du lien
+                        alert('Vous devez être connecté pour accéder à cette page.');
+                        window.location.href = 'index.html'; // Redirige vers la page d'accueil
+                    }
+                });
+            }
+
+            const gameIds = [
+                'ark', 'botw', 'csgo', 'ds', 'elden_ring', 'fc25', 'gow', 'hollow_knight', 'immortals_fenyx_rising', 'minecraft',
+                'no_mans_sky', 'overwatch', 'palworld', 'red_dead_redemption_2', 'sekiro', 'the_last_of_us', 'undertale', 'valorant', 'world_of_warcraft'
+            ];
+
+            gameIds.forEach(gameId => {
+                updateAverage(gameId);
+            });
+        });
+
+        // Ajoutez ce script pour activer le changement de position lors du défilement
+        window.onscroll = function () {
+            if (window.scrollY > 50) {  // Ajustez la valeur selon vos préférences
+                document.body.classList.add('scrolled');
+            } else {
+                document.body.classList.remove('scrolled');
+            }
+        };
+
+
+        function searchGames() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const gameList = document.getElementById('gameList');
+            const games = Array.from(document.querySelectorAll('.game'));
+            const gameDetails = document.querySelectorAll('.game-details');  // Sélectionne tous les résumés des jeux
+
+            const matchingGames = games.filter(game =>
+                game.querySelector('h3').textContent.toLowerCase().includes(searchInput)
+            );
+            const nonMatchingGames = games.filter(game => !matchingGames.includes(game));
+
+            games.forEach(game => {
+                game.style.display = matchingGames.includes(game) ? 'flex' : 'none';
+            });
+
+            gameList.innerHTML = '';
+            matchingGames.concat(nonMatchingGames).forEach(game => gameList.appendChild(game));
+
+            // Si la recherche est active, changer la couleur des résumés des jeux
+            gameDetails.forEach(detail => {
+                if (searchInput.length > 0) {
+                    detail.classList.add('search-active');  // Ajouter la classe si la recherche est active
+                } else {
+                    detail.classList.remove('search-active');  // Retirer la classe sinon
+                }
+            });
+
+            // Masquer les autres éléments si la recherche est active
+            toggleVisibility(searchInput.length > 0);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Vérifier si le consentement a déjà été donné aujourd'hui
+            const lastConsentDate = localStorage.getItem('cookieConsentDate');
+            const today = new Date().toLocaleDateString(); // Date du jour au format "mm/jj/aaaa"
+
+            // Si la date de consentement n'est pas aujourd'hui, afficher le message
+            if (lastConsentDate !== today) {
+                document.getElementById('cookie-consent-banner').style.display = 'block';
+            }
+
+            // Gestion de l'acceptation des cookies
+            document.getElementById('accept-cookies').addEventListener('click', function () {
+                // Enregistrer la date du consentement dans le localStorage
+                localStorage.setItem('cookieConsentDate', today);
+                document.getElementById('cookie-consent-banner').style.display = 'none';
+            });
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>
