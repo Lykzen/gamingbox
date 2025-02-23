@@ -149,12 +149,13 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
-    .game img {
-    width: auto;
-    height: auto;
-    max-width: none;
-    max-height: none;
+   .game img {
+    width: 100%;        /* L'image s'adapte à la largeur du conteneur */
+    height: auto;       /* Garde les proportions de l'image */
+    max-width: 400px;   /* Limite la largeur maximale pour éviter les images trop grandes */
+    max-height: 300px;  /* Limite la hauteur maximale pour éviter les images trop grandes */
 }
+
         .game-details {
             padding: 20px;
         }
@@ -413,12 +414,12 @@ nav {
 @media only screen and (max-width: 768px) {
     nav {
         flex-direction: row;  /* S'assurer que les boutons restent sur la même ligne */
-        gap: 10px;  /* Réduire l'écart entre les boutons */
+        gap: 50x;  /* Réduire l'écart entre les boutons */
         padding: 10px 0;  /* Réduire le padding vertical */
     }
 
     nav a {
-        padding: 10px 20px;  /* Réduire le padding des boutons */
+        padding: 5px 10px;  /* Réduire le padding des boutons */
         font-size: 14px;  /* Réduire la taille de la police pour les téléphones */
     }
 }
