@@ -149,11 +149,9 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
-        .game img {
-    width: 100%;        /* L'image s'adapte à la largeur du conteneur */
-    height: auto;       /* Garde les proportions de l'image */
-    max-width: 400px;   /* Limite la largeur maximale pour éviter les images trop grandes */
-    max-height: 300px;  /* Limite la hauteur maximale pour éviter les images trop grandes */
+     .game img {
+    max-width: 200px;
+    height: auto;
 }
 
         .game-details {
@@ -393,67 +391,6 @@
             padding: 10px 20px;
             cursor: pointer;
         }
-
-        /* Réactif à différentes tailles d'écran */
-@media (max-width: 1024px) {
-    nav {
-        flex-direction: column;
-        padding: 3vh 0;
-    }
-
-    nav a {
-        padding: 3vh 6vw;
-        font-size: 1rem;
-    }
-
-    .game {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .game img {
-        max-width: 70%; /* Images plus petites sur les écrans plus petits */
-    }
-
-    .search-container {
-        flex-direction: column;
-        gap: 2vh;
-        width: 90%;
-    }
-}
-
-@media (max-width: 768px) {
-    nav a {
-        padding: 2vh 5vw;
-        font-size: 1rem;
-        width: 80%;
-    }
-
-    .game img {
-        max-width: 80%;
-        max-height: 40vh; /* Adapter la taille des images sur mobile */
-    }
-
-    footer {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .game img {
-        max-width: 90%;
-        max-height: 50vh; /* Plus grand sur des écrans très petits */
-    }
-
-    footer {
-        font-size: 0.9rem;
-    }
-
-    nav a {
-        padding: 3vh 5vw;
-        font-size: 0.9rem;
-    }
-}
 
     </style>
 
