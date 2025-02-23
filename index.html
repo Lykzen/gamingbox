@@ -149,11 +149,12 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
-     .game img {
-    max-width: 200px;
+    .game img {
+    width: auto;
     height: auto;
+    max-width: none;
+    max-height: none;
 }
-
         .game-details {
             padding: 20px;
         }
@@ -391,6 +392,36 @@
             padding: 10px 20px;
             cursor: pointer;
         }
+
+        /* Styles généraux pour la barre de navigation */
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background-color: rgba(30, 30, 40, 0.9);
+    padding: 20px 0;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Réduire la taille de la barre de navigation sur les téléphones */
+@media only screen and (max-width: 768px) {
+    nav {
+        flex-direction: row;  /* S'assurer que les boutons restent sur la même ligne */
+        gap: 20px;  /* Réduire l'écart entre les boutons */
+        padding: 10px 0;  /* Réduire le padding vertical */
+    }
+
+    nav a {
+        padding: 10px 20px;  /* Réduire le padding des boutons */
+        font-size: 14px;  /* Réduire la taille de la police pour les téléphones */
+    }
+}
 
     </style>
 
